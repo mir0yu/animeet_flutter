@@ -40,6 +40,12 @@ class UserModel {
   int? age;
   String? createdAt;
   String? gender;
+  String? error;
+
+
+  UserModel.withError(String errorMessage) {
+    error = errorMessage;
+  }
 UserModel copyWith({  int? id,
   String? username,
   String? firstName,

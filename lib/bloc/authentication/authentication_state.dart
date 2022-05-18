@@ -10,3 +10,9 @@ class AuthenticationChecking extends AuthenticationState {}
 class AuthenticationSuccess extends AuthenticationState {}
 
 class AuthenticationFailed extends AuthenticationState {}
+
+class GetUserChecking extends AuthenticationState {}
+
+class GetUserSuccess extends AuthenticationState {}
+
+class GetUserFailed extends AuthenticationState {}

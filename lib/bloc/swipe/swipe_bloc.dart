@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:animeet/data/models/match.dart';
 import 'package:animeet/data/models/user.dart';
 import 'package:animeet/data/services/user/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -12,20 +13,59 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   final UserRepository repository;
 
   SwipeBloc(this.repository) : super(UsersLoading()) {
-    on<LoadUsers>((event, emit) => {
-          repository.getUsers().then((response) {
-            if (response.statusCode == 200) {
-              var rawUsers = jsonDecode(utf8.decode(response.bodyBytes));
-              List<UserModel> users = rawUsers['results']
-                  .map<UserModel>((user) => UserModel.fromJson((user)))
-                  .toList();
-              emit(UsersLoaded(users: users));
-            } else {
-              emit(UsersLoadingError());
-            }
-          })
-        });
-    on<SwipeLeft>((event, emit) => null);
-    on<SwipeRight>((event, emit) => null);
+    on<LoadUsers>(_onLoadUsers);
+    on<SwipeLeft>(_onSwipeLeft);
+    on<SwipeRight>(_onSwipeRight);
   }
+
+  void _onLoadUsers(
+      LoadUsers event,
+      Emitter<SwipeState> emit,
+      ) async {
+    {
+      emit(UsersLoading());
+      final users = await repository.getUsersForMatching();
+      final selfUser = await repository.getUser('me');
+      if (users.isNotEmpty && users.first.error == null && selfUser != null) {
+        emit(UsersLoaded(users: users, selfUser: selfUser));
+      } else {
+        emit(UsersLoadingError());
+      }
+    }
+  }
+
+
+
+  void _onSwipeRight(
+      SwipeRight event,
+      Emitter<SwipeState> emit,
+      ) {
+    if (state is UsersLoaded) {
+      final state = this.state as UsersLoaded;
+      List<UserModel> users = List.from(state.users)..remove(event.match.receiver);
+      repository.makeRequestForMatch(event.match);
+      if (users.isNotEmpty) {
+        emit(UsersLoaded(users: users, selfUser: state.selfUser));
+      } else {
+        emit(UsersLoadingError());
+      }
+    }
+  }
+
+  void _onSwipeLeft(
+      SwipeLeft event,
+      Emitter<SwipeState> emit,
+      ) {
+    if (state is UsersLoaded) {
+      final state = this.state as UsersLoaded;
+      List<UserModel> users = List.from(state.users)..remove(event.match.receiver);
+      if (users.isNotEmpty) {
+        emit(UsersLoaded(users: users,  selfUser: state.selfUser));
+      } else {
+        emit(UsersLoadingError());
+      }
+    }
+  }
+
+
 }

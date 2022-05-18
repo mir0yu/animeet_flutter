@@ -3,11 +3,12 @@ part of 'user_cubit.dart';
 @immutable
 abstract class UserState {
   late List<UserModel> users;
+  late UserModel user;
+
 }
 
 class UserInitial extends UserState {}
 
-//! User load states
 class UsersLoading extends UserState {}
 
 class UsersLoaded extends UserState {
@@ -16,4 +17,13 @@ class UsersLoaded extends UserState {
   UsersLoaded({required this.users});
 }
 
+class GetUserLoading extends UserState {}
+
+class GetUserLoaded extends UserState {
+  final UserModel user;
+
+  GetUserLoaded({required this.user});
+}
+
 class UsersLoadingError extends UserState {}
+

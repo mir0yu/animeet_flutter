@@ -1,3 +1,4 @@
+import 'package:animeet/data/services/user/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:animeet/data/services/authentication/auth_repository.dart';
@@ -18,4 +19,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         {emit(AuthenticationFailed())}
     });
   }
+
+  // void getUser() {
+  //   emit(GetUserChecking());
+  //   userRepository.getUser('me').then((user) => {
+  //     if (user != null)
+  //       {emit(GetUserSuccess())}
+  //     else
+  //       {emit(GetUserFailed())}
+  //   });
+  // }
 }

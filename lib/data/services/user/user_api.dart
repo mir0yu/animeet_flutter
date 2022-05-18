@@ -2,49 +2,98 @@ import 'dart:convert';
 
 import 'package:animeet/constants/paths.dart';
 import 'package:animeet/constants/storage.dart';
+import 'package:animeet/data/models/match.dart';
+import 'package:animeet/data/models/user.dart';
 
 import 'package:http/http.dart' as http;
 
 class UserNetworkService {
-
   getUsers() async {
-    String? t = await storage.read(key: 'token');
-    String? token = t.toString();
+    try {
+      String? t = await storage.read(key: 'token');
+      String? token = t.toString();
 
-    final response = await http.get(Uri.parse('$BASE_URL/users/'),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": 'Bearer $token'
-      },
-    );
-    print(response.body);
-    return response;
+      final response = await http.get(
+        Uri.parse('$BASE_URL/users/'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+      );
+      var rawUsers = jsonDecode(utf8.decode(response.bodyBytes));
+      List<UserModel> users = rawUsers['results']
+          .map<UserModel>((user) => UserModel.fromJson((user)))
+          .toList();
+      print(users);
+      return users;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UserModel.withError("Data not found / Connection issue");
+    }
+  }
+
+  getUser(String username) async {
+    try {
+      String? t = await storage.read(key: 'token');
+      String? token = t.toString();
+
+      final response = await http.get(
+        Uri.parse('$BASE_URL/users/$username'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+      );
+      var rawUser= jsonDecode(utf8.decode(response.bodyBytes));
+      UserModel user = UserModel.fromJson((rawUser));
+      print(username);
+
+      if (username == 'me' && response.statusCode == 200) {
+          await storage.write(key: 'id', value: user.id.toString());
+      }
+      print(user.avatar);
+      return user;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UserModel.withError("Data not found / Connection issue");
+    }
   }
 
   getUsersForMatching() async {
-    String? t = await storage.read(key: 'token');
-    String? token = t.toString();
+    try {
+      String? t = await storage.read(key: 'token');
+      String? token = t.toString();
 
-    final response = await http.get(Uri.parse('$BASE_URL/recommend/'),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": 'Bearer $token'
-      },
-    );
-    print(response.body);
-    return response;
+      final response = await http.get(
+        Uri.parse('$BASE_URL/recommend/'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+      );
+      var rawUsers = jsonDecode(utf8.decode(response.bodyBytes));
+      List<UserModel> users = rawUsers['results']
+          .map<UserModel>((user) => UserModel.fromJson((user)))
+          .toList();
+      print(users);
+      return users;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UserModel.withError("Data not found / Connection issue");
+    }
   }
 
-  swipeLeft() async {
+  makeRequestForMatch(MatchModel match) async {
     String? t = await storage.read(key: 'token');
     String? token = t.toString();
 
-    final response = await http.get(Uri.parse('$BASE_URL/recommend/'),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": 'Bearer $token'
-      },
-    );
+    final response = await http.post(Uri.parse('$BASE_URL/requests/'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+        body: jsonEncode(
+            {"sender": match.sender.id, "receiver": match.receiver.id}));
     print(response.body);
     return response;
   }

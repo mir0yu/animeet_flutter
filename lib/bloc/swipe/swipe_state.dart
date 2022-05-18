@@ -10,11 +10,12 @@ class UsersLoading extends SwipeState {}
 
 class UsersLoaded extends SwipeState {
   final List<UserModel> users;
+  final UserModel selfUser;
 
-  UsersLoaded({required this.users});
+  UsersLoaded({required this.users, required this.selfUser});
 
   @override
-  List<Object> get props => [users];
+  List<Object> get props => [users, selfUser];
 }
 
 class UsersLoadingError extends SwipeState {}

@@ -1,11 +1,15 @@
 import 'package:animeet/bloc/authentication/authentication_cubit.dart';
 import 'package:animeet/bloc/login/login_cubit.dart';
+import 'package:animeet/bloc/match/match_cubit.dart';
 import 'package:animeet/bloc/sign_up/signUp_cubit.dart';
+import 'package:animeet/bloc/swipe/swipe_bloc.dart';
 import 'package:animeet/bloc/user/user_cubit.dart';
 import 'package:animeet/data/services/authentication/auth_api.dart';
 import 'package:animeet/data/services/authentication/auth_repository.dart';
 import 'package:animeet/data/services/login/login_api.dart';
 import 'package:animeet/data/services/login/login_repository.dart';
+import 'package:animeet/data/services/match/match_api.dart';
+import 'package:animeet/data/services/match/match_repository.dart';
 import 'package:animeet/data/services/sign_up/sign_up_api.dart';
 import 'package:animeet/data/services/sign_up/sign_up_repository.dart';
 import 'package:animeet/data/services/user/user_api.dart';
@@ -39,6 +43,12 @@ Future<void> setupLocator() async {
   getIt.registerSingleton(UserRepository(getIt<UserNetworkService>()));
   getIt.registerSingleton(UserCubit(getIt<UserRepository>()));
 
+
+  getIt.registerSingleton(MatchNetworkService(getIt<UserNetworkService>()));
+  getIt.registerSingleton(MatchRepository(getIt<MatchNetworkService>()));
+  getIt.registerSingleton(MatchCubit(getIt<MatchRepository>()));
+
+  getIt.registerSingleton(SwipeBloc(getIt<UserRepository>()));
 
   // // Create Project
   // getIt.registerSingleton(

@@ -9,7 +9,6 @@ class UserSwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserCubit>(context).fetchUsers();
     return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
       switch (state.runtimeType) {
         case UsersLoaded:

@@ -6,29 +6,24 @@ abstract class SwipeEvent extends Equatable{
   List<Object> get props => [];
 }
 
-class LoadUsers extends SwipeEvent {
-  final List<UserModel> users;
 
-  LoadUsers({required this.users});
 
-  @override
-  List<Object> get props => [users];
-}
+class LoadUsers extends SwipeEvent {}
 
 class SwipeLeft extends SwipeEvent {
-  final UserModel user;
+  final MatchModel match;
 
-  SwipeLeft({required this.user});
+  SwipeLeft({required this.match});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [match];
 }
 
 class SwipeRight extends SwipeEvent {
-  final UserModel user;
+  final MatchModel match;
 
-  SwipeRight({required this.user});
+  SwipeRight({required this.match});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [match];
 }
