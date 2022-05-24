@@ -18,7 +18,7 @@ class Animeet extends StatelessWidget {
         initialRoute: "/auth",
         debugShowCheckedModeBanner: false,
         title: 'Animeet',
-        theme: ThemeData(fontFamily: 'Inter'),
+        theme: ThemeData(fontFamily: 'Montserrat'),
     onGenerateRoute: router.generateRoute,
     );
   }

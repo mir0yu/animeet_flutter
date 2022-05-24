@@ -1,3 +1,4 @@
+import 'package:animeet/constants/paths.dart';
 import 'package:animeet/data/models/user.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class MatchWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () {print(user);},
+        onTap: () {Navigator.pushNamed(context, PROFILE, arguments: user);},
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(8.0)),

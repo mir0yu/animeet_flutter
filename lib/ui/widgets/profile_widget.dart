@@ -4,9 +4,9 @@ import 'package:animeet/constants/storage.dart';
 import 'package:animeet/data/models/user.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatelessWidget {
   UserModel user;
-  ProfileScreen({Key? key, required this.user}) : super(key: key);
+  MyProfileScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

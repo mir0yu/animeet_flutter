@@ -33,6 +33,21 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
       }
     }
   }
+  void _onRefresh(
+      LoadUsers event,
+      Emitter<SwipeState> emit,
+      UserModel selfUser
+      ) async {
+    {
+      emit(UsersLoading());
+      final users = await repository.getUsersForMatching();
+      if (users.isNotEmpty && users.first.error == null) {
+        emit(UsersLoaded(users: users, selfUser: selfUser));
+      } else {
+        emit(UsersLoadingError());
+      }
+    }
+  }
 
 
 

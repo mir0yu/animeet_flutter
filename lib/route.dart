@@ -3,12 +3,14 @@ import 'package:animeet/bloc/match/match_cubit.dart';
 import 'package:animeet/bloc/sign_up/signUp_cubit.dart';
 import 'package:animeet/bloc/swipe/swipe_bloc.dart';
 import 'package:animeet/bloc/user/user_cubit.dart';
+import 'package:animeet/data/models/user.dart';
 import 'package:animeet/data/services/login/login_repository.dart';
 import 'package:animeet/data/services/match/match_repository.dart';
 import 'package:animeet/data/services/sign_up/sign_up_repository.dart';
 import 'package:animeet/data/services/user/user_repository.dart';
 import 'package:animeet/ui/screens/home_screen.dart';
 import 'package:animeet/ui/screens/login_screen.dart';
+import 'package:animeet/ui/screens/profile_screen.dart';
 import 'package:animeet/ui/screens/signUp_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,14 +81,14 @@ class AppRouter {
             child: const HomePage(),
           ),
         );
-      // case PROFILE:
-      //   final String args = settings.arguments as String;
-      //   return CupertinoPageRoute(
-      //     builder: (_) => BlocProvider(
-      //       create: (context) => UserCubit(getIt<UserRepository>()),
-      //       child: ProfilePage(username: args,),
-      //     ),
-      //   );
+      case PROFILE:
+        final UserModel args = settings.arguments as UserModel;
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => UserCubit(getIt<UserRepository>()),
+            child: ProfileScreen(user: args),
+          ),
+        );
       default:
         return null;
     }

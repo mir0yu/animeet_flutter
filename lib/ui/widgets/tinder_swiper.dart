@@ -1,4 +1,5 @@
 import 'package:animeet/bloc/swipe/swipe_bloc.dart';
+import 'package:animeet/constants/paths.dart';
 import 'package:animeet/constants/storage.dart';
 import 'package:animeet/data/models/match.dart';
 import 'package:animeet/data/models/user.dart';
@@ -64,76 +65,78 @@ class _TinderSwiperState extends State<TinderSwiper> {
                 child: SwipeCards(
                   matchEngine: _matchEngine,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        image: DecorationImage(
-                          image:
-                              NetworkImage(_swipeItems[index].content.avatar!),
-                          fit: BoxFit.fill,
+                    return InkWell(
+                      onTap: () {Navigator.pushNamed(context, PROFILE, arguments: _swipeItems[index].content);},
+                      child: Container(
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            image:
+                                NetworkImage(_swipeItems[index].content.avatar!),
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 75),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    _swipeItems[index].content.username! +
-                                        ', ' +
-                                        _swipeItems[index]
-                                            .content
-                                            .age
-                                            .toString(),
-                                    style: const TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                    overflow: TextOverflow.fade,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 75),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      _swipeItems[index].content.username! +
+                                          ', ' +
+                                          _swipeItems[index]
+                                              .content
+                                              .age
+                                              .toString(),
+                                      style: const TextStyle(
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                      overflow: TextOverflow.fade,
+                                    ),
                                   ),
-                                ),
-                                // const SizedBox(width: 30, height: 1,),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: Icon(
-                                    _swipeItems[index].content.gender == 'U'
-                                        ? Icons.accessible_forward_rounded
-                                        : _swipeItems[index].content.gender ==
-                                                'F'
-                                            ? Icons.female_rounded
-                                            : Icons.male_rounded,
+                                  // const SizedBox(width: 30, height: 1,),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 3),
+                                    child: Icon(
+                                      _swipeItems[index].content.gender == 'U'
+                                          ? Icons.accessible_forward_rounded
+                                          : _swipeItems[index].content.gender ==
+                                                  'F'
+                                              ? Icons.female_rounded
+                                              : Icons.male_rounded,
+                                      color: Colors.white,
+                                      size: 35,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                                width: 1,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(12, 0, 12, 15),
+                                child: Text(
+                                  _swipeItems[index].content.bio!,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
                                     color: Colors.white,
-                                    size: 35,
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                              width: 1,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(12, 0, 12, 15),
-                              child: Text(
-                                _swipeItems[index].content.bio!,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                  fontFamily: 'Inter',
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );

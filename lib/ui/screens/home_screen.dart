@@ -5,7 +5,6 @@ import 'package:animeet/ui/widgets/tinder_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:animeet/ui/widgets/swiper_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,16 +26,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
       if (state is UsersLoadingError) {
-          return const Scaffold(
-            body: Center(
-              child: Text(
-                'Something went wrong.',
-                style: TextStyle(color: Colors.black),
-              ),
+        return const Scaffold(
+          body: Center(
+            child: Text(
+              'Something went wrong.',
+              style: TextStyle(color: Colors.black),
             ),
-          );
+          ),
+        );
       }
-        if (state is GetUserLoaded) {
+      if (state is GetUserLoaded) {
         var userAvatar = state.user.avatar ??
             "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640";
         return Scaffold(
@@ -55,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.white,
               actions: [
                 IconButton(
-                  onPressed: () => {},
+                  onPressed: null,
                   icon: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 30,
@@ -105,11 +104,11 @@ class _HomePageState extends State<HomePage> {
                 // const UserSwiper(),
                 const TinderSwiper(),
                 const Matches(),
-          ProfileScreen(user: state.user)
+                MyProfileScreen(user: state.user)
               ],
-            ));}
-        else {
-          return const CupertinoActivityIndicator();
+            ));
+      } else {
+        return const CupertinoActivityIndicator();
       }
     });
   }
