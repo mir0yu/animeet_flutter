@@ -31,6 +31,99 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  void setUser(UserModel user) {
+    emit(GetUserLoaded(user: user));
+  }
+
+  void userForUpdate(UserModel user) {
+    emit(UserUpdated(user: user));
+  }
+
+  void updateUser(UserModel user) async {
+    emit(UserUpdating());
+
+    repository.updateUser(user).then((response) {
+      if (response.statusCode == 200) {
+        emit(UserUpdatingSuccess());
+      } else {
+        emit(UserUpdatingError());
+      }
+    });
+  }
+
+
+  void updateUsername(String username) {
+    final currentState = state;
+    if (currentState is UserUpdated) {
+      emit(UserUpdated(
+          user: currentState.user.copyWith(username: username)));
+    }
+  }
+
+  void updateFirstName(String firstName) {
+    final currentState = state;
+    print(firstName);
+    if (currentState is UserUpdated) {
+      emit(UserUpdated(
+          user: currentState.user.copyWith(firstName: firstName)));
+    }
+  }
+
+  void updateLastName(String lastName) {
+    final currentState = state;
+    if (currentState is UserUpdated) {
+      emit(UserUpdated(
+          user: currentState.user.copyWith(lastName: lastName)));
+    }
+  }
+
+  // void updateAvatar(String avatar) {
+  //   final currentState = state;
+  //   if (currentState is UserUpdated) {
+  //     emit(UserUpdated(
+  //         user: currentState.user.copyWith(avatar: avatar)));
+  //   }
+  // }
+
+  void updateGender(String gender) {
+    final currentState = state;
+    if (currentState is UserUpdated) {
+      emit(UserUpdated(
+          user: currentState.user.copyWith(gender: gender)));
+    }
+  }
+
+  void updateBio(String description) {
+    final currentState = state;
+    if (currentState is UserUpdated) {
+      emit(UserUpdated(
+          user: currentState.user.copyWith(bio: description)));
+    }
+  }
+  void updateDateOfBirth(String dateOfBirth) {
+    final currentState = state;
+    final cur = currentState.user.dateOfBirth;
+    final sta = state.user.dateOfBirth;
+    print(" current $cur");
+    print(" state $sta");
+    if (currentState is UserUpdated) {
+      emit(UserUpdated(
+          user: currentState.user.copyWith(dateOfBirth: dateOfBirth)));
+      final cur = currentState.user.dateOfBirth;
+      final sta = state.user.dateOfBirth;
+      print(" current $cur");
+      print(" state $sta");
+
+    }
+  }
+
+  // updateTaskInState(Task task) {
+  //   var currentTasks = state.tasks;
+  //   currentTasks.removeWhere((stateTask) => stateTask.id == task.id);
+  //   currentTasks.add(task);
+  //   emit(TaskUpdated(tasks: currentTasks));
+  // }
+
   // void getSelfUser() async {
   //   emit(GetSelfUserLoading());
   //   if (user != null) {

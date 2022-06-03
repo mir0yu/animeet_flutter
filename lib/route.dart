@@ -12,6 +12,7 @@ import 'package:animeet/ui/screens/home_screen.dart';
 import 'package:animeet/ui/screens/login_screen.dart';
 import 'package:animeet/ui/screens/profile_screen.dart';
 import 'package:animeet/ui/screens/signUp_screen.dart';
+import 'package:animeet/ui/screens/updateUser_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:animeet/constants/locator.dart';
@@ -87,6 +88,14 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => UserCubit(getIt<UserRepository>()),
             child: ProfileScreen(user: args),
+          ),
+        );
+      case UPDATE:
+        final UserModel args = settings.arguments as UserModel;
+        return CupertinoPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => UserCubit(getIt<UserRepository>()),
+            child: UpdateUserScreen(user: args),
           ),
         );
       default:

@@ -27,7 +27,7 @@ class UserRepository {
     return await networkService.getUser(username);
   }
 
-  // Future<Response> updateUser(UserModel user) async {
-  //   return await networkService.updateUser(user);
-  // }
+  Future<Response> updateUser(UserModel user) async {
+    return await networkService.updateUser(user);
+  }
 }

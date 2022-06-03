@@ -27,3 +27,16 @@ class GetUserLoaded extends UserState {
 
 class UsersLoadingError extends UserState {}
 
+
+class UserUpdating extends UserState {}
+
+class UserUpdated extends UserState {
+  final UserModel user;
+
+  UserUpdated({required this.user});
+}
+
+class UserUpdatingSuccess extends UserState {}
+
+class UserUpdatingError extends UserState {}
+

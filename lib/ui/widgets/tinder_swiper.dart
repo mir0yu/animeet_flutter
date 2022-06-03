@@ -3,6 +3,7 @@ import 'package:animeet/constants/paths.dart';
 import 'package:animeet/constants/storage.dart';
 import 'package:animeet/data/models/match.dart';
 import 'package:animeet/data/models/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swipe_cards/draggable_card.dart';
@@ -20,6 +21,8 @@ class _TinderSwiperState extends State<TinderSwiper> {
   late final TCardController _controller = TCardController();
   late List<SwipeItem> _swipeItems = <SwipeItem>[];
   late MatchEngine _matchEngine;
+
+  bool _nope = true;
 
   void refresh() {
     setState(() {
@@ -66,14 +69,17 @@ class _TinderSwiperState extends State<TinderSwiper> {
                   matchEngine: _matchEngine,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
-                      onTap: () {Navigator.pushNamed(context, PROFILE, arguments: _swipeItems[index].content);},
+                      onTap: () {
+                        Navigator.pushNamed(context, PROFILE,
+                            arguments: _swipeItems[index].content);
+                      },
                       child: Container(
                         margin: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
-                            image:
-                                NetworkImage(_swipeItems[index].content.avatar!),
+                            image: NetworkImage(
+                                _swipeItems[index].content.avatar!),
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -84,7 +90,8 @@ class _TinderSwiperState extends State<TinderSwiper> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10.0),
@@ -123,7 +130,8 @@ class _TinderSwiperState extends State<TinderSwiper> {
                                 width: 1,
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(12, 0, 12, 15),
+                                padding:
+                                    const EdgeInsets.fromLTRB(12, 0, 12, 15),
                                 child: Text(
                                   _swipeItems[index].content.bio!,
                                   maxLines: 3,
@@ -157,39 +165,64 @@ class _TinderSwiperState extends State<TinderSwiper> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                        // onPressed: () {
-                        //   // state.users.removeAt(index);},
-                        onPressed: () {
-                          _matchEngine.currentItem!.nope();
+                    // ElevatedButton(
+                    //     // onPressed: () {
+                    //     //   // state.users.removeAt(index);},
+                    //     onPressed: () {
+                    //       _matchEngine.currentItem!.nope();
+                    //     },
+                    //     style: ElevatedButton.styleFrom(
+                    //         elevation: 0,
+                    //         shape: const CircleBorder(),
+                    //         padding: const EdgeInsets.all(10),
+                    //         primary: Colors.white30),
+                    //     child: const Icon(
+                    //       Icons.close,
+                    //       size: 40,
+                    //       color: Color.fromRGBO(255, 46, 99, 1),
+                    //     )),
+                    OutlinedButton(
+                      onPressed: () {
+                        _matchEngine.currentItem!.nope();
                         },
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(10),
-                            primary: Colors.white30),
-                        child: const Icon(
-                          Icons.close,
-                          size: 40,
-                          color: Colors.red,
-                        )),
+                      // onLongPress: () {
+                      //   setState(() {
+                      //     !_nope;
+                      //   });
+                      // },
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: _nope? Colors.transparent: const Color.fromRGBO(255, 46, 99, 1),
+                          minimumSize: const Size(65, 65),
+                          shape: const CircleBorder(),
+                          side: BorderSide(
+                              width: 1.3,
+                              color: _nope? const Color.fromRGBO(255, 46, 99, 1): Colors.white
+                          )
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 35,
+                        color: Color.fromRGBO(255, 46, 99, 1),
+                      ),
+                    ),
                     const SizedBox(
                       height: 1,
                       width: 15,
                     ),
-                    ElevatedButton(
+                    OutlinedButton(
                       onPressed: () {
                         _matchEngine.currentItem!.like();
                       },
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(10),
-                          primary: Colors.white30),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(65, 65),
+                        shape: const CircleBorder(),
+                          side: const BorderSide(
+                              width: 1.3,
+                              color: Color.fromRGBO(8, 217, 214, 1))),
                       child: const Icon(
                         Icons.favorite_rounded,
-                        size: 40,
-                        color: Colors.blue,
+                        size: 35,
+                        color: Color.fromRGBO(8, 217, 214, 1),
                       ),
                     ),
                   ],

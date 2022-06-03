@@ -98,23 +98,31 @@ class UserNetworkService {
     return response;
   }
 
-  // updateUser(UserModel user) async {
-  //   String? t = await storage.read(key: 'token');
-  //   String? token = t.toString();
-  //
-  //   int? userId = user.id;
-  //
-  //   final response = await http.put(Uri.parse('$BASE_URL/users/$userId'),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Authorization": 'Bearer $token'
-  //     },
-  //     body: jsonEncode({
-  //       "text": user.text,
-  //     })
-  //   );
-  //   return response;
-  // }
+  updateUser(UserModel user) async {
+    String? t = await storage.read(key: 'token');
+    String? token = t.toString();
+
+    int? userId = user.id;
+
+    print(user.dateOfBirth);
+    final response = await http.patch(Uri.parse('$BASE_URL/users/$userId/'),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer $token'
+      },
+      body: jsonEncode({
+        "username": user.username,
+        "first_name": user.firstName,
+        "last_name": user.lastName,
+        "bio": user.bio,
+        "date_of_birth": user.dateOfBirth,
+        "gender": user.gender
+
+      })
+    );
+    print(response.body);
+    return response;
+  }
 
   // getAllUserTweets()
 }

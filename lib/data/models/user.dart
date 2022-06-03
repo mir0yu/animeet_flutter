@@ -5,6 +5,7 @@
 /// bio : ""
 /// avatar : "http://192.168.0.103:8080/media/default.jpg"
 /// age : 32
+/// dateOfBirth : "2002-09-22"
 /// created_at : "2022-04-15"
 /// gender : "U"
 
@@ -16,7 +17,8 @@ class UserModel {
       this.lastName, 
       this.bio, 
       this.avatar, 
-      this.age, 
+      this.age,
+      this.dateOfBirth,
       this.createdAt, 
       this.gender,});
 
@@ -28,6 +30,7 @@ class UserModel {
     bio = json['bio'];
     avatar = json['avatar'];
     age = json['age'];
+    dateOfBirth = json['date_of_birth'];
     createdAt = json['created_at'];
     gender = json['gender'];
   }
@@ -38,6 +41,7 @@ class UserModel {
   String? bio;
   String? avatar;
   int? age;
+  String? dateOfBirth;
   String? createdAt;
   String? gender;
   String? error;
@@ -53,6 +57,7 @@ UserModel copyWith({  int? id,
   String? bio,
   String? avatar,
   int? age,
+  String? dateOfBirth,
   String? createdAt,
   String? gender,
 }) => UserModel(  id: id ?? this.id,
@@ -62,6 +67,7 @@ UserModel copyWith({  int? id,
   bio: bio ?? this.bio,
   avatar: avatar ?? this.avatar,
   age: age ?? this.age,
+  dateOfBirth: dateOfBirth ?? this.dateOfBirth,
   createdAt: createdAt ?? this.createdAt,
   gender: gender ?? this.gender,
 );
@@ -74,6 +80,7 @@ UserModel copyWith({  int? id,
     map['bio'] = bio;
     map['avatar'] = avatar;
     map['age'] = age;
+    map['date_of_birth'] = dateOfBirth;
     map['created_at'] = createdAt;
     map['gender'] = gender;
     return map;

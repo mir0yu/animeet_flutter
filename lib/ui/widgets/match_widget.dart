@@ -11,7 +11,9 @@ class MatchWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () {Navigator.pushNamed(context, PROFILE, arguments: user);},
+        onTap: () {
+          Navigator.pushNamed(context, PROFILE, arguments: user);
+        },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(8.0)),
@@ -20,9 +22,16 @@ class MatchWidget extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-              children: [Text(user.username!)]),
+          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            Text(
+              user.username!,
+              overflow: TextOverflow.fade,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white),
+            )
+          ]),
         ),
       ),
     );

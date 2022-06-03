@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+      print(state);
       if (state is UsersLoadingError) {
         return const Scaffold(
           body: Center(
@@ -35,22 +36,28 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       }
-      if (state is GetUserLoaded) {
+      if (state is UsersLoading || state is GetUserLoading) {
+        return const Scaffold(
+          body: CupertinoActivityIndicator(),
+        );
+      }
+      else {
         var userAvatar = state.user.avatar ??
             "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640";
         return Scaffold(
+          resizeToAvoidBottomInset: false,
             appBar: AppBar(
               // bottomOpacity: 0.5,
               centerTitle: true,
               title: const Text(
                 "Animeet",
                 style: TextStyle(
-                    color: Colors.red,
+                    color: Color.fromRGBO(255, 46, 99, 1),
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Inter'),
               ),
-              elevation: 0,
+              elevation: 0.5,
               backgroundColor: Colors.white,
               actions: [
                 IconButton(
@@ -63,6 +70,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            backgroundColor: Colors.white,
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               unselectedItemColor: Colors.grey,
@@ -100,15 +108,13 @@ class _HomePageState extends State<HomePage> {
             ),
             body: IndexedStack(
               index: _currentIndex,
-              children: [
+              children: const [
                 // const UserSwiper(),
-                const TinderSwiper(),
-                const Matches(),
-                MyProfileScreen(user: state.user)
+                TinderSwiper(),
+                Matches(),
+                MyProfileScreen()
               ],
             ));
-      } else {
-        return const CupertinoActivityIndicator();
       }
     });
   }
