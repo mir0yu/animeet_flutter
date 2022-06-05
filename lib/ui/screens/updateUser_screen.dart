@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animeet/bloc/user/user_cubit.dart';
+import 'package:animeet/constants/paths.dart';
 import 'package:animeet/data/models/user.dart';
 import 'package:animeet/ui/widgets/snackbars/error_widget.dart';
 import 'package:animeet/ui/widgets/snackbars/success_widget.dart';
@@ -29,6 +30,12 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
 
   File? image;
 
+  @override
+  void initState() {
+    BlocProvider.of<UserCubit>(context).userForUpdate(widget.user);
+    super.initState();
+  }
+
 
   Future pickImage() async {
     try {
@@ -53,7 +60,6 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserCubit>(context).userForUpdate(widget.user);
     return Scaffold(
       appBar: AppBar(
         // bottomOpacity: 0.5,
@@ -78,8 +84,7 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
               context,
               const SuccessSnackbar(info: "Пользователь успешно изменен!"),
             );
-            // BlocProvider.of<UserCubit>(context).setUser(user);
-            Navigator.pop(context);
+            Navigator.pushNamed(context, HOME);
             return;
           case UserUpdatingError:
             showTopSnackBar(
@@ -224,14 +229,21 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
                             ElevatedButton(
                                 onPressed: showDatePicker,
                                 child: const Text("Выбрать"),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ))),
                             ),
-                            ElevatedButton(onPressed: () async {
-                              if (selectedDate != DateTime.now()) {
-                                context
-                                    .read<UserCubit>()
-                                    .updateDateOfBirth("$year-$month-$day");
-                              }
-                            }, child: const Text("Выбрать")),
+                            // ElevatedButton(onPressed: () async {
+                            //   if (selectedDate != DateTime.now()) {
+                            //     context
+                            //         .read<UserCubit>()
+                            //         .updateDateOfBirth("$year-$month-$day");
+                            //   }
+                            // }, child: const Text("Выбрать")),
                           ],
                         ),
                         // TextField(
@@ -256,16 +268,32 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
                         //       hintText: 'Дата рождения',
                         //       hintStyle: TextStyle(color: Colors.grey)),
                         // ),
+                        const SizedBox(width: 1, height: 25,),
+                        const Text("Изображение", style: TextStyle(color: Colors.white),),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Изменить изображение", style: TextStyle(color: Colors.white),),
+                            Container(
+                              child: image != null
+                                  ? Text(image!.path, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white))
+                                  : const Text("Изображение не выбрано", overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)
+                              ),
+                              width: 220,
+                            ),
                             ElevatedButton(
                               onPressed: pickImage,
                               child: const Text("Выбрать"),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ))),
                             ),
                           ],
                         ),
+                        const SizedBox(width: 1, height: 25,),
                         SizedBox(
                           width: 75,
                           height: 50,
@@ -273,11 +301,15 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
                                 child: const Text('Изменить профиль',
                                     style: TextStyle(fontSize: 16)),
                                 onPressed: ()  async {
-                                  print(state.user.dateOfBirth);
-                                  print(widget.user.dateOfBirth);
-                                  BlocProvider.of<UserCubit>(context)
-                                      .updateUser(state.user);
-                                  widget.user = state.user;
+                                  // print(state.user.dateOfBirth);
+                                  // print(widget.user.dateOfBirth);
+                                  print(state);
+                                  if (widget.user != state.user) {
+                                    BlocProvider.of<UserCubit>(context)
+                                        .updateUser(state.user);
+                                  }
+                                  Navigator.pop(context);
+                                  // widget.user = state.user;
                                 },
                                 style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(Colors.red),
@@ -312,7 +344,7 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
       context: context,
       builder: (BuildContext builder) {
         return Container(
-          height: MediaQuery.of(context).copyWith().size.height*0.25,
+          height: MediaQuery.of(context).copyWith().size.height*0.35,
           color: Colors.white,
           child: CupertinoDatePicker(
             mode: CupertinoDatePickerMode.date,

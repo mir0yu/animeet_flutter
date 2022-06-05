@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       }
-      if (state is UsersLoading || state is GetUserLoading) {
+      if (state is UsersLoading || state is GetUserLoading || state is UserUpdating) {
         return const Scaffold(
           body: CupertinoActivityIndicator(),
         );

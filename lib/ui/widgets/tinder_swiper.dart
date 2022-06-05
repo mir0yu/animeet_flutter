@@ -1,12 +1,7 @@
 import 'package:animeet/bloc/swipe/swipe_bloc.dart';
 import 'package:animeet/constants/paths.dart';
-import 'package:animeet/constants/storage.dart';
-import 'package:animeet/data/models/match.dart';
-import 'package:animeet/data/models/user.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:swipe_cards/draggable_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:tcard/tcard.dart';
 

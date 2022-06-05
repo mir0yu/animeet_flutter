@@ -67,16 +67,23 @@ class AppRouter {
           ),
         );
       case HOME:
+
+        getIt.unregister<SwipeBloc>();
+        getIt.unregister<UserCubit>();
+        getIt.unregister<MatchCubit>();
+        getIt.registerSingleton(SwipeBloc(getIt<UserRepository>()));
+        getIt.registerSingleton(UserCubit(getIt<UserRepository>()));
+        getIt.registerSingleton(MatchCubit(getIt<MatchRepository>()));
         return CupertinoPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
-                  create: (context) => SwipeBloc(getIt<UserRepository>())),
+                  create: (context) => getIt<SwipeBloc>()),
               BlocProvider(
-                create: (context) => UserCubit(getIt<UserRepository>()),
+                create: (context) => getIt<UserCubit>(),
               ),
               BlocProvider(
-                create: (context) => MatchCubit(getIt<MatchRepository>()),
+                create: (context) => getIt<MatchCubit>(),
               ),
             ],
             child: const HomePage(),
@@ -86,15 +93,19 @@ class AppRouter {
         final UserModel args = settings.arguments as UserModel;
         return CupertinoPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => UserCubit(getIt<UserRepository>()),
+            create: (context) => getIt<UserCubit>(),
             child: ProfileScreen(user: args),
           ),
         );
       case UPDATE:
+        if (getIt.isRegistered<UserCubit>())
+          getIt.unregister<UserCubit>();
+
+        getIt.registerSingleton(UserCubit(getIt<UserRepository>()));
         final UserModel args = settings.arguments as UserModel;
         return CupertinoPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => UserCubit(getIt<UserRepository>()),
+            create: (context) => getIt<UserCubit>(),
             child: UpdateUserScreen(user: args),
           ),
         );

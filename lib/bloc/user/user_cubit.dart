@@ -45,6 +45,8 @@ class UserCubit extends Cubit<UserState> {
     repository.updateUser(user).then((response) {
       if (response.statusCode == 200) {
         emit(UserUpdatingSuccess());
+        getUser("me");
+        // emit(GetUserLoaded(user: user));
       } else {
         emit(UserUpdatingError());
       }

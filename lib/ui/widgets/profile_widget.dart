@@ -1,4 +1,5 @@
 import 'package:animeet/bloc/user/user_cubit.dart';
+import 'package:animeet/constants/locator.dart';
 import 'package:animeet/constants/paths.dart';
 import 'package:animeet/constants/storage.dart';
 import 'package:animeet/data/models/user.dart';
@@ -29,14 +30,18 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   void refresh() {
     setState(() {
       BlocProvider.of<UserCubit>(context).getUser("me");
-      print(BlocProvider.of<UserCubit>(context).state);
-      print(user.firstName);
+      // print(BlocProvider.of<UserCubit>(context).state.user.username);
+      // print(user.username);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    user = BlocProvider.of<UserCubit>(context).state.user;
+    user = getIt<UserCubit>().state.user;
+    // print(user.username);
+    // print(BlocProvider.of<UserCubit>(context).state.user.username);
+    // print(BlocProvider.of<UserCubit>(context).state);
+
     return Stack(children: [
       Positioned(
         right: 10,
@@ -108,13 +113,21 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       {
                         Navigator.of(context).pushNamed(UPDATE, arguments: user),
                       },
-                  child: const Text("Изменить профиль")),
-              ElevatedButton(
-                  onPressed: () =>
-                  {
-                    refresh()
-                  },
-                  child: const Text("обновить"))
+                  child: const Text("Изменить профиль"),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                  shape: MaterialStateProperty.all<
+                      RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ))),
+              ),
+              // ElevatedButton(
+              //     onPressed: () =>
+              //     {
+              //       refresh()
+              //     },
+              //     child: const Text("обновить"))
             ],
           ),
         ),
